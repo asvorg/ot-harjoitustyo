@@ -15,3 +15,4 @@ tekstiä
 [komentorivi.txt](https://github.com/asvorg/ot-harjoitustyo/blob/master/laskarit/viikko1/komentorivi.txt)
 
 T16 muutos
+T17 muutos
