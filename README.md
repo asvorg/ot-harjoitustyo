@@ -4,7 +4,7 @@ tekstiä
 
 **lihavoitua tekstiä**
 
-* *kursiivi* *
+~~yliviivaus~~
 
 ## Alaotsikko
 
