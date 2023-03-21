@@ -1,4 +1,4 @@
-#Otsikko
+# Otsikko
 
 tekstiä
 
@@ -6,6 +6,6 @@ tekstiä
 
 * *kursiivi* *
 
-##Alaotsikko
+## Alaotsikko
 
 
