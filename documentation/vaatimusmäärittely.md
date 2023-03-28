@@ -12,3 +12,4 @@ This project is a password manager. It can generate a random password, or hash a
 ### Ideas for further development
 
 - Possible 2FA for the master password
+- GUI
