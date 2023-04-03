@@ -1,15 +1,4 @@
 
-# Otsikko
-
-tekstiä
-
-**lihavoitua tekstiä**
-
-~~yliviivaus~~
-
-## Alaotsikko
-
-
 [gitlog.txt](https://github.com/asvorg/ot-harjoitustyo/blob/master/laskarit/viikko1/gitlog.txt)
 
 [komentorivi.txt](https://github.com/asvorg/ot-harjoitustyo/blob/master/laskarit/viikko1/komentorivi.txt)
@@ -18,5 +7,4 @@ tekstiä
 
 [Hours spent](https://github.com/asvorg/ot-harjoitustyo/blob/master/documentation/tuntikirjanpito.md)
 
-T16 muutos
-T17 muutos
+USE coverage html --omit=/usr/**,salasana-wallet/src/tests/** AND coverage report -m --omit=/usr/** for coverage tests
