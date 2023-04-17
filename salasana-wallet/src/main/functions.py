@@ -11,5 +11,11 @@ def generate_password(length):
     password = ''.join(secrets.choice(alphabet) for i in range(length))
     return password
 
+def quit():
+    
+    quit_sure =  input("Are you sure? Y/N")
+    if quit_sure == "Y":
+        break
+
 
 print(generate_password(10))

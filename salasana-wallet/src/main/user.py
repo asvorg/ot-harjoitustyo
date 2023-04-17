@@ -1,4 +1,4 @@
-from main import master_password_dict
+master_password_dict = {}  # persistence needed
 
 
 class User:
@@ -6,5 +6,7 @@ class User:
     def __init__(self, username, master_password):
         self.username = username
         self.master_password = master_password
-        if self.username not in master_password_dict:
-            master_password_dict[self.username] = self.master_password
+    
+    def create_user(username, master_password):
+        if username not in master_password_dict:
+            master_password_dict[username] = master_password
