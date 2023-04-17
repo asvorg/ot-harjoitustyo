@@ -1,1 +1,1 @@
-master_password_dict = {} #persistence needed
+master_password_dict = {}  # persistence needed
