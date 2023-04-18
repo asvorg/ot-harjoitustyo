@@ -3,3 +3,7 @@ laskarit/viikko2/unicafe/src/tests/__pycache__/
 .coverage
 laskarit/viikko2/unicafe/htmlcov/
 htmlcov
+salasana-wallet/src/.pytest_cache
+salasana-wallet/src/tests/__pycache__
+salasana-wallet/src/.coverage
+salasana-wallet/.pytest_cache
