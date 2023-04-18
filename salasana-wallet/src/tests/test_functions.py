@@ -1,7 +1,5 @@
 import unittest
-import pytest
-import main
-from main import functions
+from main import functions, persistent
 
 
 class TestFunctions(unittest.TestCase):

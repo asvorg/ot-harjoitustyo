@@ -1,5 +1,8 @@
+import hashlib as hl
 import secrets
 import string
+from cryptography.fernet import Fernet
+import persistent
 
 
 def generate_password(length):
@@ -11,11 +14,17 @@ def generate_password(length):
     password = ''.join(secrets.choice(alphabet) for i in range(length))
     return password
 
-def quit():
-    
-    quit_sure =  input("Are you sure? Y/N")
-    if quit_sure == "Y":
-        break
 
-
-print(generate_password(10))
+def add_password():  # broken
+    add_password_user = input("User: ")
+    add_password_masterpassword = input("Masterpassword: ")
+    if hl.sha256(add_password_masterpassword) != persistent.users_dict[add_password_user]:
+        print("Wrong password")
+    else:
+        service = input("Service ")
+        add_password_password = input("Password ")
+        merged = str(add_password + service)
+        fernet = Fernet(add_password_masterpassword)
+        persistent.user_stored_passwords[merged] = fernet.encrypt(
+            add_password_password)
+        add_password_masterpassword = ""
