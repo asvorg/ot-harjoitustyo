@@ -1,3 +1,4 @@
+"""Salsana-wallet functions"""
 import hashlib as hl
 import secrets
 import string
@@ -6,7 +7,8 @@ import persistent
 
 
 def generate_password(length):
-    if type(length) != int:
+    """Generate a random password for the user"""
+    if not isinstance(length, int):
         raise TypeError("Length must be an integer")
     if length <= 0:
         raise ValueError("Length must be greater than zero")
@@ -16,9 +18,11 @@ def generate_password(length):
 
 
 def add_password():  # broken
+    """Add password to persistence"""
     add_password_user = input("User: ")
     add_password_masterpassword = input("Masterpassword: ")
-    if hl.sha256(add_password_masterpassword) != persistent.users_dict[add_password_user]:
+    if hl.sha256(
+            add_password_masterpassword) != persistent.users_dict[add_password_user]:
         print("Wrong password")
     else:
         service = input("Service ")

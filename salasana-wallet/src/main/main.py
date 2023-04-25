@@ -1,3 +1,5 @@
+"""Main code of the program"""
+
 #import user
 import hashlib as hl
 import functions
