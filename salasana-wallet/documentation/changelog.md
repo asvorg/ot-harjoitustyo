@@ -8,3 +8,7 @@
 - Added function to add passwords connected to the user, still broken
 - Added some cryptography capabilities
  -Added a rudimental test based interface to use the program
+
+ ## Week 5
+
+ - Fixed several Pylint errors
