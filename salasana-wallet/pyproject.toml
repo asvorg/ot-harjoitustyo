@@ -4,7 +4,7 @@ version = "0.1.0"
 description = ""
 authors = ["Aapo Koskinen <aapo_koskinen@hotmail.com>"]
 readme = "README.md"
-packages = [{include = "ot_harjoitustyo"}]
+packages = []
 
 [tool.poetry.dependencies]
 python = "^3.8"

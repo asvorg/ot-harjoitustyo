@@ -1,10 +1,11 @@
 """Test the code functions"""
 
 import unittest
-from main import functions#,persistent
+from main import functions  # ,persistent
 
 
 class TestFunctions(unittest.TestCase):
+    """Test the program functions"""
     def setUp(self):
         pass
 
