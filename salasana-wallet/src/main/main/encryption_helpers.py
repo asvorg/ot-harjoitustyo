@@ -32,7 +32,7 @@ def encryption(private_info, master_password):
             pad(string)))
     # generate a randomized secret key with urandom
     secret = master_password
-    #print('encryption key:',secret)
+    # print('encryption key:',secret)
     # creates the cipher obj using the key
     cipher = AES.new(secret)
     # encodes you private info!

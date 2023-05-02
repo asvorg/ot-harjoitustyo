@@ -50,7 +50,7 @@ def create_user():
     persistent.users_dict[create_user_selection_username] = hash_object.hexdigest(
     )
     print("Added user " + create_user_selection_username)
-    #hash_str = persistent.users_dict[create_user_selection_username]
+    # hash_str = persistent.users_dict[create_user_selection_username]
     # print(hash_str)
 
 
@@ -76,5 +76,5 @@ def pad(password_to_pad):
 
 def unpad(password_to_unpad):
     """Unpadding funciton"""
-    return password_to_unpad[:- \
-        ord(password_to_unpad[len(password_to_unpad) - 1:])]
+    return password_to_unpad[:-
+                             ord(password_to_unpad[len(password_to_unpad) - 1:])]

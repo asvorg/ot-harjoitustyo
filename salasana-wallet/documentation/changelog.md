@@ -12,3 +12,8 @@
  ## Week 5
 
  - Fixed several Pylint errors
+
+ ## Week 6
+ - Added a password listing function, added the ability to add users and the relevant passwords
+ - Changed the project structure a bit
+ - Changed the functionality of the cryptographical parts a bit

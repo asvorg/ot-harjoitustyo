@@ -14,3 +14,9 @@ Sum 11h
 2h
 
 Sum 13h
+
+## Weel 6
+
+7h
+
+Sum 20h
