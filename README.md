@@ -4,4 +4,6 @@
 
 [Changelog](https://github.com/asvorg/ot-harjoitustyo/blob/master/documentation/changelog.md)
 
+[How to use](https://github.com/asvorg/ot-harjoitustyo/blob/master/salasana-wallet/documentation/howto.md)
+
 USE coverage html --omit=/usr/**,salasana-wallet/src/tests/** AND coverage report -m --omit=/usr/** for coverage tests
