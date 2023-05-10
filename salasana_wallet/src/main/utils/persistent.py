@@ -1,4 +1,9 @@
 """Persistent resources"""
+from pymongo import MongoClient
 
-users_dict = {}
-user_stored_passwords = {}
+
+def initialize_database():
+    client = MongoClient('mongodb://localhost:27017/')
+    database = client['mydatabase']
+    collection = database['mycollection']
+    return client, database,collection
