@@ -17,3 +17,7 @@
  - Added a password listing function, added the ability to add users and the relevant passwords
  - Changed the project structure a bit
  - Changed the functionality of the cryptographical parts a bit
+
+ ## Final week
+ - Changed the text based storage to MongoDB
+ - Fixed some testing issues, still not working as intended

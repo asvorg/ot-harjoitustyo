@@ -15,8 +15,14 @@ Sum 11h
 
 Sum 13h
 
-## Weel 6
+## Week 6
 
 7h
 
 Sum 20h
+
+## Final week
+
+7h
+
+Sum 27h
