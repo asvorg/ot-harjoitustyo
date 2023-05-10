@@ -1,0 +1,8 @@
+
+[run]
+source = src
+omit = src/**/__init__.py,src/tests/**,src/ui/**,src/index.py,/usr/**
+
+[report]
+source = ot-harjoitustyo
+omit = src/**/__init__.py,src/tests/**,src/ui/**,src/index.py,/usr/**

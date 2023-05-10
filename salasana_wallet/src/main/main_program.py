@@ -1,8 +1,9 @@
 """Main code of the program"""
-from main.functions import *
+from utils import functions
 
 
 while True:
+    functions.art()
     print("Select option:\n")
     print("Create user: c")
     print("Quit: q")

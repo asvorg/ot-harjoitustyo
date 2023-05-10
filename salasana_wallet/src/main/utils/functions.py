@@ -2,8 +2,10 @@
 import hashlib as hl
 import secrets
 import string
-from main.persistent import user_stored_passwords,users_dict
-from main.encryption_helpers import encryption,decryption
+from pymongo import MongoClient
+from . import persistent
+from . import encryption_helpers as eh
+
 
 
 def generate_password():
@@ -78,3 +80,46 @@ def unpad(password_to_unpad):
     """Unpadding funciton"""
     return password_to_unpad[:-
                              ord(password_to_unpad[len(password_to_unpad) - 1:])]
+
+def art():
+    print('''
+
+    __      __  _____  .____    .____     ______________________
+    /  \    /  \/  _  \ |    |   |    |    \_   _____/\__    ___/
+    \   \/\/   /  /_\  \|    |   |    |     |    __)_   |    |   
+    \        /    |    \    |___|    |___  |        \  |    |   
+    \__/\  /\____|__  /_______ \_______ \/_______  /  |____|   
+        \/         \/        \/       \/        \/            
+
+    ''')
+    art.func_code = (lambda:None)
+
+def initialize_database():
+    # Connect to the MongoDB server
+    client = MongoClient('mongodb://localhost:27017/')
+
+    # Access the database
+    database = client['mydatabase']
+
+    # Access or create a collection within the database
+    collection = database['mycollection']
+
+    # Perform operations on the collection
+    # For example, insert a document
+    document = {"name": "John", "age": 30}
+    result = collection.insert_one(document)
+    print("Inserted document ID:", result.inserted_id)
+
+def add_document(data):
+    # Connect to the MongoDB server
+    client = MongoClient('mongodb://localhost:27017/')
+
+    # Access the database
+    database = client['mydatabase']
+
+    # Access the collection
+    collection = database['mycollection']
+
+    # Insert a document
+    result = collection.insert_one(data)
+    print("Inserted document ID:", result.inserted_id)
