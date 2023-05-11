@@ -129,3 +129,10 @@ def change_master_password():
         print("Wrong password")
 
     username_query = {"username": change_user_selection_username}
+
+def validate_input(func_input: str):
+    """Validate the input of the main program"""
+    valid = ["c","cp","q","gr","ap","l","d"]
+    if func_input not in valid:
+        print("Input not valid, please choose something from above")
+        return False

@@ -18,11 +18,21 @@ class TestFunctions(unittest.TestCase):
         self.test_service = "test_service"
 
     @patch('builtins.input', return_value='10')
-    def test_generate_password(self, mock_input):
-        """Test generate_password function"""
+    def test_generate_password_length(self, mock_input):
+        """Test generate_password function length"""
         password = functions.generate_password()
         self.assertIsInstance(password, str)
         self.assertEqual(len(password), 10)
+    
+    def test_generate_password_invalid_input(self,mock_input):
+        with patch('builtins.input', side_effect=['abc', '8']):
+            with self.assertRaises(TypeError):
+                functions.generate_password()
+    
+    def test_generate_password_less_than_zero(self,mock_input):
+        with patch('builtins.input', side_effect=['0', '-5']):
+            with self.assertRaises(ValueError):
+                functions.generate_password()
 
     @patch('builtins.input', return_value='invalid')
     def test_generate_password_invalid_input(self, mock_input):
@@ -51,5 +61,7 @@ class TestFunctions(unittest.TestCase):
         unpadded_password = functions.unpad(padded_password)
         expected_unpadded_password = 'padded_password'
         self.assertEqual(unpadded_password, expected_unpadded_password)
+    
+    
 
 

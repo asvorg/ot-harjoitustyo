@@ -14,6 +14,9 @@ while True:
     print("Delete user: d")
     selection = input("")
 
+    if functions.validate_input(selection) == False:
+        break
+
     if selection == "q":
         quit_sure = input("Are you sure? Y/N ")
         if quit_sure == "Y":
@@ -21,7 +24,7 @@ while True:
             break
         print("Continuing to selection\n")
 
-    if selection == "c":  # persistence still needed
+    if selection == "c":
         functions.create_user()
 
     if selection == "gr":
