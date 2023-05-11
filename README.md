@@ -8,6 +8,7 @@ The Salasana-wallet is a program that allows users to securely store and manage 
 - Generate Random Password: Generates a strong and random password for users.
 - Add Password: Enables users to add passwords for different services along with relevant information.
 - List Passwords: Displays a list of stored passwords for a given user.
+- User deletion: Supports user deletion
 
 ## Prerequisites
 

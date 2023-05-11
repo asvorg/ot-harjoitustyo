@@ -21,3 +21,5 @@
  ## Final week
  - Changed the text based storage to MongoDB
  - Fixed some testing issues, still not working as intended
+ - Added functionality to delete users
+ - Added the ability to change a service password

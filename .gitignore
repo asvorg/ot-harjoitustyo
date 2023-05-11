@@ -7,3 +7,4 @@ salasana-wallet/src/.pytest_cache
 salasana-wallet/src/tests/__pycache__
 salasana-wallet/src/.coverage
 salasana-wallet/.pytest_cache
+salasana_wallet/src/tests/tests_old.py

@@ -1,11 +1,12 @@
 """Test the code functions"""
 
 import unittest
+import pytest
 from unittest.mock import patch
+from pymongo import MongoClient, errors
 import io
 import main.utils.functions as functions
 import main.utils.persistent as persistent
-
 
 
 class TestFunctions(unittest.TestCase):
@@ -16,65 +17,39 @@ class TestFunctions(unittest.TestCase):
         self.test_password = "test_password"
         self.test_service = "test_service"
 
-    def test_generate_password_length(self):
-        """Test if generate_password returns proper length"""
-        length = 10
-        test_length = functions.generate_password(length)
-        if length != len(test_length):
-            return False
-        return True
+    @patch('builtins.input', return_value='10')
+    def test_generate_password(self, mock_input):
+        """Test generate_password function"""
+        password = functions.generate_password()
+        self.assertIsInstance(password, str)
+        self.assertEqual(len(password), 10)
 
-    def test_generate_password_type(self):
-        """Test if the generate_password function returns proper type"""
+    @patch('builtins.input', return_value='invalid')
+    def test_generate_password_invalid_input(self, mock_input):
+        """Test generate_password function with invalid input"""
         with self.assertRaises(TypeError):
-            functions.generate_password("A")
+            functions.generate_password()
 
-    @patch('builtins.input', side_effect=["new_user", "testpassword"])
-    def test_create_user(self, mock_inputs):
-        functions.create_user()
-        self.assertEqual("new_user", functions.persistent.users_dict.keys()[0])
-        self.assertEqual(64, len(functions.persistent.users_dict.values()[0]))
+    def test_pad(self):
+        """Test the pad function"""
+        password = 'short_password'
+        padded_password = functions.pad(password)
+        expected_padded_password = password + ('\x00' * (32 - len(password)))
+        self.assertEqual(padded_password, expected_padded_password)
 
-        @patch('builtins.input', side_effect=["test_user", "testpassword"])
-        def test_existing_user(self, mock_inputs):
-            functions.persistent.users_dict = {"test_user": "fakehash"}
-            with unittest.patch('builtins.print') as mock_print:
-                functions.create_user()
-                mock_print.assert_called_with("Already in use")
-            self.assertEqual({"test_user": "fakehash"},
-                             functions.persistent.users_dict)
+        password = 'a' * 32
+        padded_password = functions.pad(password)
+        self.assertEqual(padded_password, password)
 
-    def test_add_password(self):
-        add_password_user_input = self.test_user + '\n'
-        add_password_masterpassword_input = self.test_password + '\n'
-        add_password_service_input = self.test_service + '\n'
-        add_password_password_input = "test_password" + '\n'
-        expected_output = "Added password for user test_user for service test_service\n"
+        with pytest.raises(ValueError, match="Password must be less than 32 characters"):
+            password = 'long_password' * 10
+            padded_password = functions.pad(password)
 
-        with unittest.mock.patch('builtins.input', side_effect=[add_password_user_input,
-                                                                add_password_masterpassword_input,
-                                                                add_password_service_input,
-                                                                add_password_password_input]):
-            with unittest.mock.patch('sys.stdout', new=io.StringIO()) as fake_stdout:
-                functions.add_password()
-                self.assertEqual(fake_stdout.getvalue(), expected_output)
+    def test_unpad(self):
+        """Test the unpad function"""
+        padded_password = 'padded_password\x00\x00\x00'
+        unpadded_password = functions.unpad(padded_password)
+        expected_unpadded_password = 'padded_password'
+        self.assertEqual(unpadded_password, expected_unpadded_password)
 
-    def tearDown(self):
-        if (self.test_user, self.test_service) in persistent.user_stored_passwords:
-            del persistent.user_stored_passwords[(
-                self.test_user, self.test_service)]
 
-    def test_padding(self):
-        password_to_pad = "password"
-        padded_password = functions.pad(password_to_pad)
-        self.assertEqual(
-            padded_password,
-            "password\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00")
-
-        password_to_pad = "thisisaverylongpassword"
-        padded_password = functions.pad(password_to_pad)
-        self.assertEqual(padded_password, password_to_pad)
-
-        password_to_pad = ""
-        padded_password = functions.pad(password_to_pad)
-        self.assertEqual(padded_password, "\x00" * 32)

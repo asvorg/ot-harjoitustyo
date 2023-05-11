@@ -6,10 +6,12 @@ while True:
     functions.art()
     print("Select option:\n")
     print("Create user: c")
+    print("Change the password of a specified user: cp")
     print("Quit: q")
     print("Generate a random password: gr")
     print("Add a password: ap")
     print("List passwords of a given user: l")
+    print("Delete user: d")
     selection = input("")
 
     if selection == "q":
@@ -29,5 +31,9 @@ while True:
     if selection == "ap":
         functions.add_password()
 
-    if selection == "l":  # not working properly yet
+    if selection == "l":
         functions.list_passwords()
+    
+    if selection == "d":
+        functions.delete_user()
+

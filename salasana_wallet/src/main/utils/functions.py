@@ -10,13 +10,18 @@ from . import encryption_helpers as eh
 def generate_password():
     """Generate a random password for the user"""
     length = input("Desired password length: \n")
-    length = int(length)
+    try:
+        length = int(length)
+    except ValueError:
+        raise TypeError("Length must be an integer")
+
     if not isinstance(length, int):
         raise TypeError("Length must be an integer")
     if length <= 0:
         raise ValueError("Length must be greater than zero")
+
     alphabet = string.digits + string.ascii_letters
-    password = ''.join(secrets.choice(alphabet) for i in range(length))
+    password = ''.join(secrets.choice(alphabet) for _ in range(length))
     return password
 
 
@@ -25,10 +30,10 @@ def add_password():
     add_password_user = input("User: ")
     add_password_masterpassword = input("Masterpassword: ")
 
-    persistent.initialize_database()
+    client, collection = persistent.initialize_database(add_password_user,"")
 
-    if add_password_masterpassword is None or user_document['password'] != hashlib.sha256(add_password_masterpassword.encode('utf-8')).hexdigest():
-            print("Wrong password")
+    if add_password_masterpassword is None or user_document['password'] != hl.sha256(add_password_masterpassword.encode('utf-8')).hexdigest():
+        print("Wrong password")
     else:
         service = input("Service: ")
         add_password_password = input("Desired password: ")
@@ -41,15 +46,14 @@ def create_user():
     create_user_selection_username = input("Input username: ")
     create_user_selection_master_password = input("Input master password: ")
 
-    persistent.initialize_database()
-
+    client, database, collection = persistent.initialize_database_users('users')
     username_query = {"username": create_user_selection_username}
     existing_user = collection.find_one(username_query)
     if existing_user:
         print("Already in use")
         return
 
-    hash_object = hashlib.sha256(create_user_selection_master_password.encode('utf-8'))
+    hash_object = hl.sha256(create_user_selection_master_password.encode('utf-8'))
     user_document = {'username': create_user_selection_username, 'password': hash_object.hexdigest()}
     collection.insert_one(user_document)
     print("Added user " + create_user_selection_username)
@@ -77,6 +81,8 @@ def list_passwords():  # not working properly yet
         
 def pad(password_to_pad):
     """Padding function"""
+    if len(password_to_pad) > 32:
+        raise ValueError("Password must be less than 32 characters")
     return password_to_pad + ('\x00' * (32 - len(password_to_pad)))
 
 
@@ -97,3 +103,29 @@ def art():
 
     ''')
     art.func_code = (lambda:None)
+
+def delete_user():
+
+    user_name = input("User to delete: ")
+    switch = input("ARE YOU SURE? YES/NO ")
+    if switch != "YES":
+        print("Invalid confirmation")
+        print("")
+        return
+    client, database, collection = persistent.initialize_database_users('users')
+    username = user_name
+    query = {'username': username}
+    result = collection.delete_one(query)
+    if result.deleted_count == 1:
+        print(f'User "{username}" deleted successfully.')
+    else:
+        print(f'User "{username}" not found.')
+
+def change_master_password():
+    client, database, collection = persistent.initialize_database_users('users')
+    change_user_selection_username = input("Input username: ")
+    change_user_selection_master_password = input("Input master password: ")
+    if change_user_selection_master_password is None or user_document['password'] != hl.sha256(change_user_selection_master_password.encode('utf-8')).hexdigest():
+        print("Wrong password")
+
+    username_query = {"username": change_user_selection_username}
