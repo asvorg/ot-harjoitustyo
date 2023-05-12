@@ -1,4 +1,5 @@
 """Main code of the program"""
+# pylint: disable=E0401
 from utils import functions
 
 functions.spawn_mongo()
@@ -14,7 +15,7 @@ while True:
     print("Delete user: d")
     selection = input("")
 
-    if functions.validate_input(selection) == False:
+    if functions.validate_input(selection) is False:
         break
 
     if selection == "q":
@@ -36,7 +37,7 @@ while True:
 
     if selection == "l":
         functions.list_passwords()
-    
+
     if selection == "d":
         functions.delete_user()
 

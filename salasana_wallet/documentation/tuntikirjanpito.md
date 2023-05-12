@@ -27,4 +27,6 @@ Sum 20h
 
 5h
 
-Sum 32h
+5h
+
+Sum 38h

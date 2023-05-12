@@ -22,4 +22,7 @@
  - Changed the text based storage to MongoDB
  - Fixed some testing issues, still not working as intended
  - Added functionality to delete users
- - Added the ability to change a service password
+ - Added the ability to change the master password
+ - Rewrote the encryption functions changed to AES-256 in ECB mode
+ - Functionality is now finalized
+ - Modified the main of the program so that MongoDB spwans automatically
