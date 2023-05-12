@@ -10,19 +10,14 @@ from . import encryption_helpers as eh
 def generate_password():
     """Generate a random password for the user"""
     length = input("Desired password length: \n")
-    try:
+    if length.isnumeric():
         length = int(length)
-    except ValueError:
-        raise TypeError("Length must be an integer")
-
     if not isinstance(length, int):
-        raise TypeError("Length must be an integer")
-    if length <= 0:
-        raise ValueError("Length must be greater than zero")
-
+        print("Length must be an integer")
+        return
     alphabet = string.digits + string.ascii_letters
     password = ''.join(secrets.choice(alphabet) for _ in range(length))
-    return password
+    print(password)
 
 
 def add_password():
@@ -40,7 +35,8 @@ def add_password():
 
     if user_document is None or \
           add_password_masterpassword is None or \
-              user_document['password'] != hl.sha256(add_password_masterpassword.encode('utf-8')).hexdigest():
+              user_document['password'] != \
+                  hl.sha256(add_password_masterpassword.encode('utf-8')).hexdigest():
         print("Wrong password")
     else:
         service = input("Service: ")
@@ -151,7 +147,8 @@ def change_master_password():
     user_document = collection.find_one(user_query)
     if user_document is None or \
           change_user_selection_master_password is None or \
-              user_document['password'] != hl.sha256(change_user_selection_master_password.encode('utf-8')).hexdigest():
+              user_document['password'] != \
+                  hl.sha256(change_user_selection_master_password.encode('utf-8')).hexdigest():
         print("Wrong password")
         return
 

@@ -29,7 +29,7 @@ while True:
         functions.create_user()
 
     if selection == "gr":
-        print(functions.generate_password())
+        functions.generate_password()
         print("\n")
 
     if selection == "ap":

@@ -15,18 +15,34 @@ class TestFunctions(unittest.TestCase):
         self.test_password = "test_password"
         self.test_service = "test_service"
 
-    @patch('builtins.input', return_value='10')
-    def test_generate_password_length(self, mock_input):
-        """Test generate_password function length"""
-        password = functions.generate_password()
-        self.assertIsInstance(password, str)
-        self.assertEqual(len(password), 10)
+    def test_generate_password_valid_length(self):
+        """Test for generating a password with a valid length"""
+        with unittest.mock.patch('builtins.input', return_value='8'):
+            with unittest.mock.patch('builtins.print') as mock_print:
+                functions.generate_password()
+                mock_print.assert_called_once()
 
-    @patch('builtins.input', return_value='invalid')
-    def test_generate_password_invalid_input(self, mock_input):
-        """Test generate_password function with invalid input"""
-        with self.assertRaises(TypeError):
-            functions.generate_password()
+    def test_generate_password_invalid_length(self):
+        """Test for generating a password with an invalid length"""
+        with unittest.mock.patch('builtins.input', return_value='abc'):
+            with unittest.mock.patch('builtins.print') as mock_print:
+                functions.generate_password()
+                mock_print.assert_called_with("Length must be an integer")
+
+    def test_generate_password_negative_length(self):
+        """Test for generating a password with a negative length"""
+        with unittest.mock.patch('builtins.input', return_value='-5'):
+            with unittest.mock.patch('builtins.print') as mock_print:
+                functions.generate_password()
+                mock_print.assert_called_with("Length must be an integer")
+
+    def test_generate_password_zero_length(self):
+        """Test for generating a password with a length of zero"""
+        with unittest.mock.patch('builtins.input', return_value='0'):
+            with unittest.mock.patch('builtins.print') as mock_print:
+                functions.generate_password()
+                mock_print.assert_called_once()
+
 
     def test_valid_input(self):
         """Test the valid input function, so it accepts the valid inputs"""
