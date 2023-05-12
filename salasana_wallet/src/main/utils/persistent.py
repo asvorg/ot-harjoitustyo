@@ -2,17 +2,16 @@
 from pymongo import MongoClient, errors
 
 
-def initialize_database_passwords(users_collection, password_collection):
+def initialize_database_passwords(password_collection):
     client = MongoClient('mongodb://localhost:27017/')
     database = client['data']
-    users_collection = database[users_collection]
     password_collection = database[password_collection]
-    return client, database, users_collection, password_collection
+    return client, database, password_collection
 
-def initialize_database_users(users_collection):
+def initialize_database_users(user_name):
     client = MongoClient('mongodb://localhost:27017/')
     database = client['data']
-    users_collection = database[users_collection]
+    users_collection = database[user_name]
     return client, database, users_collection
 
 def connect_to_mongodb():
@@ -27,3 +26,9 @@ def connect_to_mongodb():
     except Exception as e:
         print(f"Failed to connect to MongoDB: {str(e)}")
         return None
+
+def delete_from_passwords(user_name):
+    client = MongoClient('mongodb://localhost:27017/')
+    database = client['data']
+    collection = database[user_name]
+    return collection

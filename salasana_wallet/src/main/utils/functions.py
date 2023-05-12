@@ -2,9 +2,10 @@
 import hashlib as hl
 import secrets
 import string
+import subprocess
+import pymongo
 from . import persistent
 from . import encryption_helpers as eh
-
 
 
 def generate_password():
@@ -30,15 +31,19 @@ def add_password():
     add_password_user = input("User: ")
     add_password_masterpassword = input("Masterpassword: ")
 
-    client, collection = persistent.initialize_database(add_password_user,"")
+    client,database, collection = persistent.initialize_database_passwords(add_password_user)
+    client_users, database_users, collection_users = persistent.initialize_database_users('users')
 
-    if add_password_masterpassword is None or user_document['password'] != hl.sha256(add_password_masterpassword.encode('utf-8')).hexdigest():
+    user_query = {'username': add_password_user}
+    user_document = collection_users.find_one(user_query)
+    print(user_document)
+
+    if user_document is None or add_password_masterpassword is None or user_document['password'] != hl.sha256(add_password_masterpassword.encode('utf-8')).hexdigest():
         print("Wrong password")
     else:
         service = input("Service: ")
         add_password_password = input("Desired password: ")
-        padded_password = pad(add_password_password)
-        encrypted = eh.encryption(add_password_password, padded_password)
+        encrypted = eh.encryption(add_password_password,add_password_masterpassword)
         collection.insert_one({'user': add_password_user, 'service': service, 'password': encrypted})
 
 def create_user():
@@ -58,38 +63,35 @@ def create_user():
     collection.insert_one(user_document)
     print("Added user " + create_user_selection_username)
 
+def list_passwords():
+    """List all saved passwords"""
+    add_password_user = input("User: ")
+    add_password_masterpassword = input("Masterpassword: ")
 
-def list_passwords():  # not working properly yet
-    """List passwords of inputted user"""
-    list_user = input("User to list the passwords for: ")
-    add_password_masterpassword = input("Masterpassword for this user: ")
-    list_dict = {}
-    try:
-        if hl.sha256(add_password_masterpassword.encode('utf-8')
-                    ).hexdigest() != persistent.users_dict[list_user]:
-            print("Wrong password")
-            return
-        for key, value in persistent.user_stored_passwords.items():
-            if key[0] == list_user:
-                list_dict[key[1]] = value
-                print(list_dict)
-    except KeyError:
-        print("\n")
-        print("User not found")
-        print("\n")
+    client, database, collection = persistent.initialize_database_passwords(add_password_user)
+    client_users, database_users, collection_users = persistent.initialize_database_users('users')
 
-        
-def pad(password_to_pad):
-    """Padding function"""
-    if len(password_to_pad) > 32:
-        raise ValueError("Password must be less than 32 characters")
-    return password_to_pad + ('\x00' * (32 - len(password_to_pad)))
+    user_query = {'username': add_password_user}
+    user_document = collection_users.find_one(user_query)
+
+    if user_document is None or add_password_masterpassword is None or user_document['password'] != hl.sha256(
+            add_password_masterpassword.encode('utf-8')).hexdigest():
+        print("Wrong password")
+    else:
+        # Find all passwords for the user
+        password_query = {'user': add_password_user}
+        password_documents = collection.find(password_query)
+
+        # Print the passwords with their services
+        for password_document in password_documents:
+            service = password_document['service']
+            password = password_document['password']
+            password = eh.decryption(password,add_password_masterpassword)
+            print(f"{service}: {password}")
+
+        print()
 
 
-def unpad(password_to_unpad):
-    """Unpadding funciton"""
-    return password_to_unpad[:-
-                             ord(password_to_unpad[len(password_to_unpad) - 1:])]
 
 def art():
     print('''
@@ -113,22 +115,31 @@ def delete_user():
         print("")
         return
     client, database, collection = persistent.initialize_database_users('users')
-    username = user_name
-    query = {'username': username}
+    query = {'username': user_name}
     result = collection.delete_one(query)
     if result.deleted_count == 1:
-        print(f'User "{username}" deleted successfully.')
+        print(f'User "{user_name}" deleted successfully.')
+        collection = persistent.delete_from_passwords(user_name)
+        collection.drop()
     else:
-        print(f'User "{username}" not found.')
-
+        print(f'User "{user_name}" not found.')
+        
 def change_master_password():
     client, database, collection = persistent.initialize_database_users('users')
     change_user_selection_username = input("Input username: ")
     change_user_selection_master_password = input("Input master password: ")
-    if change_user_selection_master_password is None or user_document['password'] != hl.sha256(change_user_selection_master_password.encode('utf-8')).hexdigest():
-        print("Wrong password")
 
-    username_query = {"username": change_user_selection_username}
+    # Check if the master password is correct
+    user_query = {"username": change_user_selection_username}
+    user_document = collection.find_one(user_query)
+    if user_document is None or change_user_selection_master_password is None or user_document['password'] != hl.sha256(change_user_selection_master_password.encode('utf-8')).hexdigest():
+        print("Wrong password")
+        return
+
+    # Update the master password
+    new_master_password = input("Input new master password: ")
+    collection.update_one(user_query, {"$set": {"password": hl.sha256(new_master_password.encode('utf-8')).hexdigest()}})
+    print("Master password changed successfully.")
 
 def validate_input(func_input: str):
     """Validate the input of the main program"""
@@ -136,3 +147,7 @@ def validate_input(func_input: str):
     if func_input not in valid:
         print("Input not valid, please choose something from above")
         return False
+
+def spawn_mongo():
+    subprocess.Popen(['mate-terminal', '--tab', '--', 'mongo'])
+

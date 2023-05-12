@@ -1,7 +1,7 @@
 """Main code of the program"""
 from utils import functions
 
-
+functions.spawn_mongo()
 while True:
     functions.art()
     print("Select option:\n")
@@ -40,3 +40,5 @@ while True:
     if selection == "d":
         functions.delete_user()
 
+    if selection == "cp":
+        functions.change_master_password()
