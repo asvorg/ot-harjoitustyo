@@ -2,10 +2,7 @@
 
 import unittest
 from unittest.mock import patch
-from pymongo import MongoClient, errors
-import io
 import main.utils.functions as functions
-import main.utils.persistent as persistent
 import main.utils.encryption_helpers as eh
 
 
@@ -24,12 +21,6 @@ class TestFunctions(unittest.TestCase):
         password = functions.generate_password()
         self.assertIsInstance(password, str)
         self.assertEqual(len(password), 10)
-
-    def test_generate_password_invalid_input(self, mock_input):
-        """Test for invalid input in generate password"""
-        with patch('builtins.input', side_effect=['abc', '8']):
-            with self.assertRaises(TypeError):
-                functions.generate_password()
 
     @patch('builtins.input', return_value='invalid')
     def test_generate_password_invalid_input(self, mock_input):

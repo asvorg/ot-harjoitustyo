@@ -38,7 +38,9 @@ def add_password():
     user_query = {'username': add_password_user}
     user_document = collection_users.find_one(user_query)
 
-    if user_document is None or add_password_masterpassword is None or user_document['password'] != hl.sha256(add_password_masterpassword.encode('utf-8')).hexdigest():
+    if user_document is None or \
+          add_password_masterpassword is None or \
+              user_document['password'] != hl.sha256(add_password_masterpassword.encode('utf-8')).hexdigest():
         print("Wrong password")
     else:
         service = input("Service: ")
@@ -83,7 +85,9 @@ def list_passwords():
     user_query = {'username': list_password_user}
     user_document = collection_users.find_one(user_query)
 
-    if user_document is None or list_password_masterpassword is None or user_document['password'] != hl.sha256(
+    if user_document is None or \
+          list_password_masterpassword is None or \
+              user_document['password']!= hl.sha256(
             list_password_masterpassword.encode('utf-8')).hexdigest():
         print("Wrong password")
     else:
@@ -145,7 +149,9 @@ def change_master_password():
 
     user_query = {"username": change_user_selection_username}
     user_document = collection.find_one(user_query)
-    if user_document is None or change_user_selection_master_password is None or user_document['password'] != hl.sha256(change_user_selection_master_password.encode('utf-8')).hexdigest():
+    if user_document is None or \
+          change_user_selection_master_password is None or \
+              user_document['password'] != hl.sha256(change_user_selection_master_password.encode('utf-8')).hexdigest():
         print("Wrong password")
         return
 
