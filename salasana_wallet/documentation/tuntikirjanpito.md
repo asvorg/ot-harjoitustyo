@@ -29,4 +29,5 @@ Sum 20h
 
 5h
 
-Sum 38h
+2h
+Sum 40h
